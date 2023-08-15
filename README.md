@@ -12,6 +12,25 @@ O método `generateMigrations(folder)` observa os arquivos que seguem o padrão 
 
 Possui o método `migrateBetterSQLite3(db, migrations)`, aonde recebe como argumento as migrações geradas no arquivo `migrations.ts`, então faz migrações em um banco de dados `sqlite` usando o `better-sqlite3`
 
+### Utilities para better-sqlite3
+
+Dois métodos simples para reduzir o boilerplate de inserção e update, não são necessários, mas pelo menos reduzem o código para não precisar de um ORM
+
+`insertIntoDB` Método de inserção inspirado no `knex` é chamado da seguinte maneira
+
+```ts
+insertIntoDB(db, 'test', { id: 1, name: 'Test' });
+
+// Retornando um valor
+const { id } = insertIntoDB(db, 'test', { id: 1, name: 'Test' }, 'id');
+```
+
+`updateDB` Método de update inspirado no `knex` é chamado da seguinte maneira
+
+```ts
+updateDB(db, 'test', { name: 'Test updated' }, { id: 1 }); // Segundo objeto é where
+```
+
 ## Características do projeto de migrações
 
 As migrações são sempre para `latest` sem a possibilidade de `down`, pois se você fez uma migração errada em produção você está ferrado de qualquer jeito

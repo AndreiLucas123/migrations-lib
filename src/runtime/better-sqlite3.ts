@@ -65,3 +65,5 @@ export function migrateBetterSQLite3(
     });
   })();
 }
+
+export * from './utils/better-sqlite3-crud';
