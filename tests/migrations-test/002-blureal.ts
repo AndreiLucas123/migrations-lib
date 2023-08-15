@@ -1,4 +1,4 @@
-import { Database as DB } from "better-sqlite3";
+import { Database as DB } from 'better-sqlite3';
 
 //
 //
@@ -17,6 +17,6 @@ export default function migrate(db: DB) {
       comment_id INTEGER NOT NULL,
       FOREIGN KEY (post_id) REFERENCES posts (id),
       FOREIGN KEY (comment_id) REFERENCES comments (id)
-    );`
+    );`,
   );
 }

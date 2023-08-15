@@ -1,15 +1,15 @@
-import type { Database } from "better-sqlite3";
-import type { Migration } from "./types";
+import type { Database } from 'better-sqlite3';
+import type { Migration } from './types';
 
 //
 //
 
 export function migrateBetterSQLite3(
   db: Database,
-  migrations: Migration<Database>[]
+  migrations: Migration<Database>[],
 ): void {
   // Get current date in format YYYY-MM-DDTHH:mm:ss.sssZ and remove the .sss
-  const date = new Date().toISOString().replace(/\.\d{3}Z$/, "Z");
+  const date = new Date().toISOString().replace(/\.\d{3}Z$/, 'Z');
 
   //
   db.transaction(() => {
@@ -17,7 +17,7 @@ export function migrateBetterSQLite3(
     const migrationTable = db
       .prepare(`SELECT name FROM sqlite_master WHERE type = ? AND name = ?`)
       .pluck()
-      .get("table", "migrations") as string | undefined;
+      .get('table', 'migrations') as string | undefined;
 
     // If migrations table doesn't exist, create it
     if (!migrationTable) {
@@ -25,13 +25,13 @@ export function migrateBetterSQLite3(
         `CREATE TABLE migrations (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
-        date TEXT NOT NULL);`
+        date TEXT NOT NULL);`,
       ).run();
     }
 
     // Get all migrations from migrations table
     const migrationsInTable = db
-      .prepare("SELECT name FROM migrations")
+      .prepare('SELECT name FROM migrations')
       .all()
       .map((migration: any) => migration.name as string);
 
@@ -42,7 +42,7 @@ export function migrateBetterSQLite3(
     for (let i = 0; i < migrationsInTable.length; i++) {
       if (migrationsInTable[i] !== newMigrationsNames[i]) {
         throw new Error(
-          `Migrations are probably corrupted. Migrations in migrations table are not the same as migrations passed to the migrate() function.`
+          `Migrations are probably corrupted. Migrations in migrations table are not the same as migrations passed to the migrate() function.`,
         );
       }
     }
@@ -51,15 +51,15 @@ export function migrateBetterSQLite3(
       const { file: migrationName, migration: migrationContent } = migration;
 
       if (!migrationsInTable[i]) {
-        if (typeof migrationContent === "string") {
+        if (typeof migrationContent === 'string') {
           db.exec(migrationContent);
         } else {
           migrationContent(db);
         }
 
-        db.prepare("INSERT INTO migrations (name, date) VALUES (?, ?)").run(
+        db.prepare('INSERT INTO migrations (name, date) VALUES (?, ?)').run(
           migrationName,
-          date
+          date,
         );
       }
     });

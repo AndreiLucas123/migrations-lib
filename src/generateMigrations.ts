@@ -1,7 +1,7 @@
-import type { Migration } from "./runtime/types";
-import { basename } from "node:path";
-import { readFile, writeFile } from "node:fs/promises";
-import chokidar from "chokidar";
+import type { Migration } from './runtime/types';
+import { basename } from 'node:path';
+import { readFile, writeFile } from 'node:fs/promises';
+import chokidar from 'chokidar';
 
 //
 //
@@ -11,13 +11,14 @@ type FileWatched = {
   path: string;
   content: string;
   sql: boolean;
+  number: number;
 };
 
 //
 //
 
 export function generateMigrations(
-  directoryToWatch: string
+  directoryToWatch: string,
 ): chokidar.FSWatcher {
   let filesWatched: FileWatched[] = [];
   let fileOutput: string | null = null;
@@ -46,8 +47,8 @@ export function generateMigrations(
 
   async function generateOutput() {
     let tsFiles = 0;
-    let output = "";
-    let imports = "";
+    let output = '';
+    let imports = '';
     let outputObjArray: Migration<any>[] = [];
 
     for (const file of filesWatched) {
@@ -60,14 +61,14 @@ export function generateMigrations(
 
     if (tsFiles) {
       output += imports;
-      output += "\n";
+      output += '\n';
     }
 
     let counter = 0;
     output += `export default ${JSON.stringify(
       outputObjArray,
       null,
-      2
+      2,
     )};`.replace(/"<!-- TS -->"/g, () => `ts${++counter}`);
 
     if (output === fileOutput) {
@@ -79,8 +80,8 @@ export function generateMigrations(
     const migrationsDir = `${directoryToWatch}/migrations.ts`;
 
     console.log(`Generating '${migrationsDir}' file...`);
-    await writeFile(migrationsDir, output, "utf-8");
-    console.log("Successfully generated");
+    await writeFile(migrationsDir, output, 'utf-8');
+    console.log('Successfully generated');
   }
 
   //
@@ -94,21 +95,24 @@ export function generateMigrations(
 
     queueOutput();
 
-    const sql = _basename.endsWith(".sql");
+    const sql = _basename.endsWith('.sql');
+
+    const number = +_basename.split('-')[0];
 
     filesWatched.push({
-      name: _basename.replace(/\.(ts|sql)$/, ""),
-      content: sql ? await readFile(path, "utf-8") : "<!-- TS -->",
+      name: _basename.replace(/\.(ts|sql)$/, ''),
+      content: sql ? await readFile(path, 'utf-8') : '<!-- TS -->',
       path,
       sql,
+      number,
     });
 
     // Sort by name
     filesWatched = filesWatched.sort((a, b) => {
-      const aName = a.name;
-      const bName = b.name;
-      if (aName < bName) return -1;
-      if (aName > bName) return 1;
+      const aNumber = a.number;
+      const bNumber = b.number;
+      if (aNumber < bNumber) return -1;
+      if (aNumber > bNumber) return 1;
       return 0;
     });
   }
@@ -125,12 +129,12 @@ export function generateMigrations(
   //
 
   watcher
-    .on("add", add)
-    .on("change", (path) => {
+    .on('add', add)
+    .on('change', (path) => {
       remove(path);
       add(path);
     })
-    .on("unlink", remove);
+    .on('unlink', remove);
 
   return watcher;
 }

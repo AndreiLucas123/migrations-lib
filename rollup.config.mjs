@@ -34,11 +34,11 @@ export default [
     ...sharedConfig,
   },
   //
-  //  migrateBetterSQLite3
+  //  better-sqlite3
   {
-    input: './src/runtime/migrateBetterSQLite3.ts',
+    input: './src/runtime/better-sqlite3.ts',
     output: {
-      file: './dist/migrateBetterSQLite3.js',
+      file: './dist/better-sqlite3.js',
       format: 'es',
       sourcemap: false,
     },
@@ -48,8 +48,8 @@ export default [
   //
   //  Types generations
   {
-    input: './dist/types/runtime/migrateBetterSQLite3.d.ts',
-    output: { file: 'dist/migrateBetterSQLite3.d.ts', format: 'es' },
+    input: './dist/types/runtime/better-sqlite3.d.ts',
+    output: { file: 'dist/better-sqlite3.d.ts', format: 'es' },
     plugins: [dts()],
   },
   {

@@ -1,15 +1,15 @@
-import { assert } from "chai";
-import { describe, it } from "mocha";
-import Database, { Database as DB } from "better-sqlite3";
-import { migrateBetterSQLite3 as migrate } from "../src/runtime/migrateBetterSQLite3";
+import { assert } from 'chai';
+import { describe, it } from 'mocha';
+import Database, { Database as DB } from 'better-sqlite3';
+import { migrateBetterSQLite3 as migrate } from '../src/runtime/better-sqlite3';
 
-const db = new Database(":memory:");
+const db = new Database(':memory:');
 // const db = new Database('db.db');
-db.pragma("journal_mode = WAL");
+db.pragma('journal_mode = WAL');
 
 const migrations = [
   {
-    file: "2021-01-01-create-users-table.sql",
+    file: '2021-01-01-create-users-table.sql',
     migration: `
     CREATE TABLE users (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -21,7 +21,7 @@ const migrations = [
     );`,
   },
   {
-    file: "2021-01-02-create-posts-table.sql",
+    file: '2021-01-02-create-posts-table.sql',
     migration: `
     CREATE TABLE posts (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -32,7 +32,7 @@ const migrations = [
     );`,
   },
   {
-    file: "2021-01-03-create-comments-table.ts",
+    file: '2021-01-03-create-comments-table.ts',
     migration: (db: DB) => {
       db.exec(
         `
@@ -49,7 +49,7 @@ const migrations = [
           FOREIGN KEY (post_id) REFERENCES posts (id),
           FOREIGN KEY (comment_id) REFERENCES comments (id)
         );
-        `
+        `,
       );
     },
   },
@@ -57,27 +57,27 @@ const migrations = [
 
 //
 //
-describe("migrate", () => {
+describe('migrate', () => {
   //
   //
-  it("should migrate without errors", () => {
+  it('should migrate without errors', () => {
     migrate(db, migrations);
   });
 
   //
   //
-  it("should create migrations table", () => {
+  it('should create migrations table', () => {
     const migrationTable = db
-      .prepare("SELECT name FROM sqlite_master WHERE type = ? AND name = ?")
-      .get("table", "migrations");
+      .prepare('SELECT name FROM sqlite_master WHERE type = ? AND name = ?')
+      .get('table', 'migrations');
 
     assert.exists(migrationTable);
   });
 
   //
   //
-  it("should insert migrations into migrations table", () => {
-    const dbResult = db.prepare("SELECT name FROM migrations").all() as {
+  it('should insert migrations into migrations table', () => {
+    const dbResult = db.prepare('SELECT name FROM migrations').all() as {
       name: string;
     }[];
 
@@ -89,10 +89,10 @@ describe("migrate", () => {
 
   //
   //
-  it("should execute migrations again and change nothing", () => {
+  it('should execute migrations again and change nothing', () => {
     migrate(db, migrations);
 
-    const dbResult = db.prepare("SELECT name FROM migrations").all() as {
+    const dbResult = db.prepare('SELECT name FROM migrations').all() as {
       name: string;
     }[];
 
@@ -104,11 +104,11 @@ describe("migrate", () => {
 
   //
   //
-  it("should throw error if migrations are corrupted", () => {
+  it('should throw error if migrations are corrupted', () => {
     assert.throws(() => {
       migrate(db, [
         {
-          file: "2021-01-01-create-random-table.sql",
+          file: '2021-01-01-create-random-table.sql',
           migration: `
         CREATE TABLE random_table (
           id INTEGER PRIMARY KEY AUTOINCREMENT,

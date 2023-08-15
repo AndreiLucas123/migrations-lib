@@ -1,13 +1,13 @@
-import type chokidar from "chokidar";
-import { assert } from "chai";
-import { describe, it } from "mocha";
-import { generateMigrations } from "../src/generateMigrations";
-import { resolve } from "path";
-import { readFileSync } from "node:fs";
+import type chokidar from 'chokidar';
+import { assert } from 'chai';
+import { describe, it } from 'mocha';
+import { generateMigrations } from '../src/generateMigrations';
+import { resolve } from 'path';
+import { readFileSync } from 'node:fs';
 
 //
 //
-describe("generateMigrations", () => {
+describe('generateMigrations', () => {
   let watcher: chokidar.FSWatcher | null = null;
 
   //
@@ -33,23 +33,23 @@ export default [
     "migration": ts1
   }
 ];`
-    .replace(/\\n/g, "\n")
-    .replace(/ +/g, " ");
+    .replace(/\\n/g, '\n')
+    .replace(/ +/g, ' ');
 
   //
   //
 
-  it("should migrate without errors", async function () {
-    watcher = generateMigrations(resolve(__dirname, "migrations-test"));
+  it('should migrate without errors', async function () {
+    watcher = generateMigrations(resolve(__dirname, 'migrations-test'));
 
     await new Promise((resolve) => setTimeout(resolve, 200));
 
-    const file = resolve(__dirname, "migrations-test", "migrations.ts");
-    const fileContent = readFileSync(file, "utf-8")
+    const file = resolve(__dirname, 'migrations-test', 'migrations.ts');
+    const fileContent = readFileSync(file, 'utf-8')
       .toString()
       .trim()
-      .replace(/\\n/g, "\n")
-      .replace(/ +/g, " ");
+      .replace(/\\n/g, '\n')
+      .replace(/ +/g, ' ');
 
     assert.equal(fileContent, fileText);
   });
