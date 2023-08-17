@@ -45,7 +45,22 @@ export function generateMigrations(
   //
   //
 
+  function sortFiles() {
+    filesWatched = filesWatched.sort((a, b) => {
+      const aNumber = a.number;
+      const bNumber = b.number;
+      if (aNumber < bNumber) return -1;
+      if (aNumber > bNumber) return 1;
+      return 0;
+    });
+  }
+
+  //
+  //
+
   async function generateOutput() {
+    sortFiles();
+
     let tsFiles = 0;
     let output = '';
     let imports = '';
@@ -105,15 +120,6 @@ export function generateMigrations(
       path,
       sql,
       number,
-    });
-
-    // Sort by name
-    filesWatched = filesWatched.sort((a, b) => {
-      const aNumber = a.number;
-      const bNumber = b.number;
-      if (aNumber < bNumber) return -1;
-      if (aNumber > bNumber) return 1;
-      return 0;
     });
   }
 

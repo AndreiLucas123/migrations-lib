@@ -1,6 +1,6 @@
 {
   "name": "migrations-lib",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "author": "Simple Organization",
   "scripts": {
     "format": "prettier --write \"src/**/*.ts\" \"tests/**/*.ts\"",
