@@ -1,6 +1,7 @@
-import type { Migration } from './runtime/types';
+import type { Migration } from '../runtime/types';
 import { basename } from 'node:path';
 import { readFile, writeFile } from 'node:fs/promises';
+import { LoggerMigrations, consoleLogger } from './logger';
 import chokidar from 'chokidar';
 
 //
@@ -17,22 +18,16 @@ type FileWatched = {
 //
 //
 
-export function generateMigrations(
+export function generateMigrationsWatcher(
   directoryToWatch: string,
-): chokidar.FSWatcher {
+  logger: LoggerMigrations = consoleLogger,
+): { start(): void; stop(): void } {
+  let watcher: chokidar.FSWatcher | null = null;
   let filesWatched: FileWatched[] = [];
   let fileOutput: string | null = null;
   let timeout: any = null;
 
   const regex = /\d+-.+\.(ts|sql)/;
-
-  //
-  //
-
-  const watcher = chokidar.watch(`${directoryToWatch}/*.{ts,sql}`, {
-    ignored: /(^|[\/\\])\../, // Ignorar arquivos ocultos
-    persistent: true,
-  });
 
   //
   //
@@ -94,9 +89,9 @@ export function generateMigrations(
 
     const migrationsDir = `${directoryToWatch}/migrations.ts`;
 
-    console.log(`Generating '${migrationsDir}' file...`);
+    logger.info(`Generating '${migrationsDir}' file...`);
     await writeFile(migrationsDir, output, 'utf-8');
-    console.log('Successfully generated');
+    logger.info(`'${migrationsDir}' file generated successfully`);
   }
 
   //
@@ -134,13 +129,28 @@ export function generateMigrations(
   //
   //
 
-  watcher
-    .on('add', add)
-    .on('change', (path) => {
-      remove(path);
-      add(path);
-    })
-    .on('unlink', remove);
+  return {
+    start() {
+      watcher = chokidar.watch(`${directoryToWatch}/*.{ts,sql}`, {
+        ignored: /(^|[\/\\])\../, // Ignorar arquivos ocultos
+        persistent: true,
+      });
 
-  return watcher;
+      watcher
+        .on('add', add)
+        .on('change', (path) => {
+          remove(path);
+          add(path);
+          logger.info('Changed migration file: ' + path);
+        })
+        .on('unlink', (path) => {
+          remove(path);
+          logger.info('Removed migration file: ' + path);
+        });
+    },
+    stop() {
+      clearTimeout(timeout);
+      watcher?.close();
+    },
+  };
 }

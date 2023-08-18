@@ -1,20 +1,20 @@
 import type chokidar from 'chokidar';
 import { assert } from 'chai';
 import { describe, it } from 'mocha';
-import { generateMigrations } from '../src/generateMigrations';
+import { generateMigrationsWatcher } from '../src/rollup-plugin/generateMigrationsWatcher';
 import { resolve } from 'path';
 import { readFileSync } from 'node:fs';
 
 //
 //
 describe('generateMigrations', () => {
-  let watcher: chokidar.FSWatcher | null = null;
+  let watcher: ReturnType<typeof generateMigrationsWatcher> | null = null;
 
   //
   //
 
   afterEach(() => {
-    watcher?.close();
+    watcher?.stop();
     watcher = null;
   });
 
@@ -40,7 +40,8 @@ export default [
   //
 
   it('should migrate without errors', async function () {
-    watcher = generateMigrations(resolve(__dirname, 'migrations-test'));
+    watcher = generateMigrationsWatcher(resolve(__dirname, 'migrations-test'));
+    watcher.start();
 
     await new Promise((resolve) => setTimeout(resolve, 200));
 

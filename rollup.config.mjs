@@ -22,11 +22,11 @@ const sharedConfig = {
 
 export default [
   //
-  //  generateMigrations
+  //  rollup-plugin-migrations
   {
-    input: './src/generateMigrations.ts',
+    input: './src/rollup-plugin/index.ts',
     output: {
-      file: './dist/generateMigrations.js',
+      file: './dist/rollup-plugin-migrations.js',
       format: 'es',
       sourcemap: false,
     },
@@ -53,8 +53,8 @@ export default [
     plugins: [dts()],
   },
   {
-    input: './dist/types/generateMigrations.d.ts',
-    output: { file: 'dist/generateMigrations.d.ts', format: 'es' },
+    input: './dist/types/rollup-plugin/index.d.ts',
+    output: { file: 'dist/rollup-plugin-migrations.d.ts', format: 'es' },
     plugins: [dts()],
   },
 ];
