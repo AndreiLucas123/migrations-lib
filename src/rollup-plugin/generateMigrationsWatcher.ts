@@ -99,7 +99,7 @@ export function generateMigrationsWatcher(
   async function add(path: string) {
     const _basename = basename(path);
     if (!regex.test(_basename)) {
-      return;
+      return false;
     }
 
     queueOutput();
@@ -115,6 +115,8 @@ export function generateMigrationsWatcher(
       sql,
       number,
     });
+
+    return true;
   }
 
   //
@@ -137,10 +139,12 @@ export function generateMigrationsWatcher(
 
       watcher
         .on('add', add)
-        .on('change', (path) => {
+        .on('change', async (path) => {
           remove(path);
-          add(path);
-          logger.info('Changed migration file: ' + path);
+          const changed = await add(path);
+          if (changed) {
+            logger.info('Changed migration file: ' + path);
+          }
         })
         .on('unlink', (path) => {
           remove(path);
