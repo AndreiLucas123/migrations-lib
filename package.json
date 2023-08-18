@@ -1,6 +1,6 @@
 {
   "name": "migrations-lib",
-  "version": "0.1.4",
+  "version": "0.1.6",
   "author": "Simple Organization",
   "scripts": {
     "format": "prettier --write \"src/**/*.ts\" \"tests/**/*.ts\"",
@@ -35,9 +35,9 @@
       "default": "./dist/better-sqlite3.js",
       "types": "./dist/better-sqlite3.d.ts"
     },
-    "./generateMigrations": {
-      "default": "./dist/generateMigrations.js",
-      "types": "./dist/generateMigrations.d.ts"
+    "./rollup-plugin-migrations": {
+      "default": "./dist/rollup-plugin-migrations.js",
+      "types": "./dist/rollup-plugin-migrations.d.ts"
     }
   },
   "files": [

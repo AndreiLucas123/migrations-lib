@@ -89,9 +89,8 @@ export function generateMigrationsWatcher(
 
     const migrationsDir = `${directoryToWatch}/migrations.ts`;
 
-    logger.info(`Generating '${migrationsDir}' file...`);
     await writeFile(migrationsDir, output, 'utf-8');
-    logger.info(`'${migrationsDir}' file generated successfully`);
+    logger.info(`file for migrations ${migrationsDir} generated successfully`);
   }
 
   //

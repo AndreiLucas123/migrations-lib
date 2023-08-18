@@ -27,7 +27,6 @@ export function migrationsPlugin(directoryToWatch: string): Plugin {
 
     buildStart() {
       pluginContext = this;
-      pluginContext.info('buildStart watch.start()');
       watcher.start();
     },
 
@@ -36,7 +35,6 @@ export function migrationsPlugin(directoryToWatch: string): Plugin {
 
     buildEnd() {
       pluginContext = null;
-      this.info('buildEnd watch.close()');
       watcher.stop();
     },
   };
