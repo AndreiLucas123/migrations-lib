@@ -102,8 +102,6 @@ export function generateMigrationsWatcher(
       return false;
     }
 
-    queueOutput();
-
     const sql = _basename.endsWith('.sql');
 
     const number = +_basename.split('-')[0];
@@ -115,6 +113,8 @@ export function generateMigrationsWatcher(
       sql,
       number,
     });
+
+    queueOutput();
 
     return true;
   }
