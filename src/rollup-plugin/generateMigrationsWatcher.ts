@@ -89,6 +89,12 @@ export function generateMigrationsWatcher(
 
     const migrationsDir = `${directoryToWatch}/migrations.ts`;
 
+    const fileContent = await readFile(migrationsDir, 'utf-8');
+
+    if (fileContent === output) {
+      return;
+    }
+
     await writeFile(migrationsDir, output, 'utf-8');
     logger.info(`file for migrations ${migrationsDir} generated successfully`);
   }
