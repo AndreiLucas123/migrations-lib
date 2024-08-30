@@ -1,51 +1,52 @@
 {
   "name": "migrations-lib",
-  "version": "0.1.7",
+  "version": "1.0.0-next.0",
   "author": "Simple Organization",
   "scripts": {
+    "build": "tsc && rollup -c && tsx esbuild.ts",
     "format": "prettier --write \"src/**/*.ts\" \"tests/**/*.ts\"",
-    "test": "mocha tests/**/*.test.ts -r esbuild-register -extension ts",
-    "build": "tsc && rollup -c",
-    "prepack": "npm run build"
+    "test": "playwright test",
+    "prepack": "pnpm build"
   },
   "main": "src/index.ts",
-  "dependencies": {
-    "better-sqlite3": "^8.4.0"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "@types/better-sqlite3": "^7.6.4",
-    "@types/chai": "^4.3.5",
-    "@types/mocha": "^10.0.1",
-    "@types/node": "^20.5.0",
-    "chai": "^4.3.7",
-    "chokidar": "^3.5.3",
-    "esbuild": "^0.18.13",
-    "esbuild-register": "^3.4.2",
-    "mocha": "^10.2.0",
-    "prettier": "^2.8.8",
-    "rollup": "^3.26.2",
-    "rollup-plugin-dts": "^5.3.1",
-    "rollup-plugin-esbuild": "^5.0.0",
-    "typescript": "^5.1.6"
+    "@types/better-sqlite3": "^7.6.11",
+    "@types/chai": "^4.3.19",
+    "@types/mocha": "^10.0.7",
+    "@types/node": "^22.5.1",
+    "chai": "^5.1.1",
+    "chokidar": "^3.6.0",
+    "esbuild": "^0.23.1",
+    "mocha": "^10.7.3",
+    "prettier": "^3.3.3",
+    "rollup": "^4.21.2",
+    "rollup-plugin-dts": "^6.1.1",
+    "typescript": "^5.5.4",
+    "better-sqlite3": "^11.2.1"
   },
+  "types": "dist/index.d.ts",
   "type": "module",
   "exports": {
-    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
     "./better-sqlite3": {
-      "default": "./dist/better-sqlite3.js",
-      "types": "./dist/better-sqlite3.d.ts"
+      "default": "./better-sqlite3/index.js",
+      "types": "./better-sqlite3/index.d.ts"
     },
     "./rollup-plugin-migrations": {
-      "default": "./dist/rollup-plugin-migrations.js",
-      "types": "./dist/rollup-plugin-migrations.d.ts"
+      "default": "./rollup-plugin-migrations/index.js",
+      "types": "./rollup-plugin-migrations/index.d.ts"
     }
   },
   "files": [
-    "better-sqlite3.d.ts",
-    "dist/better-sqlite3.d.ts",
-    "dist/better-sqlite3.js",
-    "rollup-plugin-migrations.d.ts",
-    "dist/rollup-plugin-migrations.d.ts",
-    "dist/rollup-plugin-migrations.js"
+    "dist/index.d.ts",
+    "dist/index.js",
+    "better-sqlite3/index.js",
+    "better-sqlite3/index.d.ts",
+    "rollup-plugin-migrations/index.js",
+    "rollup-plugin-migrations/index.d.ts"
   ]
 }
