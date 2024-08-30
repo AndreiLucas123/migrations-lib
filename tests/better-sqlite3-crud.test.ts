@@ -1,18 +1,17 @@
-import { beforeEach, describe, test } from 'mocha';
+import { expect, test } from '@playwright/test';
 import { insertIntoDB, updateDB } from '../src/runtime/better-sqlite3';
 import Database, { Database as SQLiteDatabase } from 'better-sqlite3';
-import { assert } from 'chai';
 
 //
 //
 
-describe('CRUD methods on /runtime/better-sqlite3', () => {
+test.describe('CRUD methods on /runtime/better-sqlite3', () => {
   let db: SQLiteDatabase;
 
   //
   //
 
-  beforeEach(() => {
+  test.beforeEach(() => {
     db = new Database(':memory:');
     db.prepare('CREATE TABLE test (id INTEGER PRIMARY KEY, name TEXT)').run();
   });
@@ -20,7 +19,7 @@ describe('CRUD methods on /runtime/better-sqlite3', () => {
   //
   //
 
-  afterEach(() => {
+  test.afterEach(() => {
     db.close();
   });
 
@@ -32,7 +31,7 @@ describe('CRUD methods on /runtime/better-sqlite3', () => {
 
     const result = db.prepare('SELECT * FROM test').all() as any;
 
-    assert.deepEqual(result, [{ id: 1, name: 'Test' }]);
+    expect(result).toEqual([{ id: 1, name: 'Test' }]);
   });
 
   //
@@ -43,8 +42,8 @@ describe('CRUD methods on /runtime/better-sqlite3', () => {
 
     const result = db.prepare('SELECT * FROM test').all() as any;
 
-    assert.deepEqual(result, [{ id: 1, name: 'Test' }]);
-    assert.equal(id, 1);
+    expect(result).toEqual([{ id: 1, name: 'Test' }]);
+    expect(id).toBe(1);
   });
 
   //
@@ -58,7 +57,7 @@ describe('CRUD methods on /runtime/better-sqlite3', () => {
 
     const result = db.prepare('SELECT * FROM test').all() as any;
 
-    assert.deepEqual(result, [
+    expect(result).toEqual([
       { id: 1, name: 'Test updated' },
       { id: 2, name: 'Test something' },
     ]);
@@ -70,18 +69,16 @@ describe('CRUD methods on /runtime/better-sqlite3', () => {
   test('Deve dar erro em updateDB caso não passe propriedades', () => {
     insertIntoDB(db, 'test', { id: 1, name: 'Test' });
 
-    assert.throws(
-      () => updateDB(db, 'test', {}, { id: 1 }),
+    expect(() => updateDB(db, 'test', {}, { id: 1 })).toThrow(
       'data must have at least one property',
     );
 
-    assert.throws(
-      () => updateDB(db, 'test', { name: 'Updated' }, {}),
+    expect(() => updateDB(db, 'test', { name: 'Updated' }, {})).toThrow(
       'where must have at least one property',
     );
 
     const result = db.prepare('SELECT * FROM test').all() as any;
 
-    assert.deepEqual(result, [{ id: 1, name: 'Test' }]);
+    expect(result).toEqual([{ id: 1, name: 'Test' }]);
   });
 });

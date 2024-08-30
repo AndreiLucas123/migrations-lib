@@ -1,7 +1,6 @@
-import { assert } from 'chai';
-import { describe, it } from 'mocha';
 import Database, { Database as DB } from 'better-sqlite3';
 import { migrateBetterSQLite3 as migrate } from '../src/runtime/better-sqlite3';
+import test, { expect } from '@playwright/test';
 
 const db = new Database(':memory:');
 // const db = new Database('db.db');
@@ -57,26 +56,26 @@ const migrations = [
 
 //
 //
-describe('migrate', () => {
+test.describe('migrate', () => {
   //
   //
-  it('should migrate without errors', () => {
+  test('should migrate without errors', () => {
     migrate(db, migrations);
   });
 
   //
   //
-  it('should create migrations table', () => {
+  test('should create migrations table', () => {
     const migrationTable = db
       .prepare('SELECT name FROM sqlite_master WHERE type = ? AND name = ?')
       .get('table', 'migrations');
 
-    assert.exists(migrationTable);
+    expect(migrationTable).toBeTruthy();
   });
 
   //
   //
-  it('should insert migrations into migrations table', () => {
+  test('should insert migrations into migrations table', () => {
     const dbResult = db.prepare('SELECT name FROM migrations').all() as {
       name: string;
     }[];
@@ -84,12 +83,12 @@ describe('migrate', () => {
     const migrationsInTable = dbResult.map((migration) => migration.name);
     const migrationsNames = migrations.map((migration) => migration.file);
 
-    assert.deepEqual(migrationsInTable, migrationsNames);
+    expect(migrationsInTable).toEqual(migrationsNames);
   });
 
   //
   //
-  it('should execute migrations again and change nothing', () => {
+  test('should execute migrations again and change nothing', () => {
     migrate(db, migrations);
 
     const dbResult = db.prepare('SELECT name FROM migrations').all() as {
@@ -99,13 +98,13 @@ describe('migrate', () => {
     const migrationsInTable = dbResult.map((migration) => migration.name);
     const migrationsNames = migrations.map((migration) => migration.file);
 
-    assert.deepEqual(migrationsInTable, migrationsNames);
+    expect(migrationsInTable).toEqual(migrationsNames);
   });
 
   //
   //
-  it('should throw error if migrations are corrupted', () => {
-    assert.throws(() => {
+  test('should throw error if migrations are corrupted', () => {
+    expect(() => {
       migrate(db, [
         {
           file: '2021-01-01-create-random-table.sql',
@@ -116,6 +115,6 @@ describe('migrate', () => {
         );`,
         },
       ]);
-    });
+    }).toThrowError();
   });
 });

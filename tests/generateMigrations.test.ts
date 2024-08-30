@@ -1,19 +1,17 @@
-import type chokidar from 'chokidar';
-import { assert } from 'chai';
-import { describe, it } from 'mocha';
 import { generateMigrationsWatcher } from '../src/rollup-plugin/generateMigrationsWatcher';
-import { resolve } from 'path';
+import { resolve } from 'node:path';
 import { readFileSync } from 'node:fs';
+import test, { expect } from '@playwright/test';
 
 //
 //
-describe('generateMigrations', () => {
+test.describe('generateMigrations', () => {
   let watcher: ReturnType<typeof generateMigrationsWatcher> | null = null;
 
   //
   //
 
-  afterEach(() => {
+  test.afterEach(() => {
     watcher?.stop();
     watcher = null;
   });
@@ -39,7 +37,8 @@ export default [
   //
   //
 
-  it('should migrate without errors', async function () {
+  test('should migrate without errors', async function () {
+    const __dirname = new URL('.', import.meta.url).pathname;
     watcher = generateMigrationsWatcher(resolve(__dirname, 'migrations-test'));
     watcher.start();
 
@@ -52,6 +51,6 @@ export default [
       .replace(/\\n/g, '\n')
       .replace(/ +/g, ' ');
 
-    assert.equal(fileContent, fileText);
+    expect(fileContent).toBe(fileText);
   });
 });

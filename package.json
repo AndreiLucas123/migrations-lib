@@ -9,21 +9,17 @@
     "prepack": "pnpm build"
   },
   "main": "src/index.ts",
-  "dependencies": {},
   "devDependencies": {
+    "@playwright/test": "^1.46.1",
     "@types/better-sqlite3": "^7.6.11",
-    "@types/chai": "^4.3.19",
-    "@types/mocha": "^10.0.7",
     "@types/node": "^22.5.1",
-    "chai": "^5.1.1",
+    "better-sqlite3": "^11.2.1",
     "chokidar": "^3.6.0",
     "esbuild": "^0.23.1",
-    "mocha": "^10.7.3",
     "prettier": "^3.3.3",
     "rollup": "^4.21.2",
     "rollup-plugin-dts": "^6.1.1",
-    "typescript": "^5.5.4",
-    "better-sqlite3": "^11.2.1"
+    "typescript": "^5.5.4"
   },
   "types": "dist/index.d.ts",
   "type": "module",
