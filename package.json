@@ -19,6 +19,7 @@
     "prettier": "^3.3.3",
     "rollup": "^4.21.2",
     "rollup-plugin-dts": "^6.1.1",
+    "tsx": "^4.19.0",
     "typescript": "^5.5.4"
   },
   "types": "dist/index.d.ts",
@@ -29,12 +30,12 @@
       "default": "./dist/index.js"
     },
     "./better-sqlite3": {
-      "default": "./better-sqlite3/index.js",
-      "types": "./better-sqlite3/index.d.ts"
+      "types": "./better-sqlite3/index.d.ts",
+      "default": "./better-sqlite3/index.js"
     },
     "./rollup-plugin-migrations": {
-      "default": "./rollup-plugin-migrations/index.js",
-      "types": "./rollup-plugin-migrations/index.d.ts"
+      "types": "./rollup-plugin-migrations/index.d.ts",
+      "default": "./rollup-plugin-migrations/index.js"
     }
   },
   "files": [

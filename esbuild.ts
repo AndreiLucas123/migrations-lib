@@ -5,10 +5,11 @@ import * as esbuild from 'esbuild';
 //
 
 await esbuild.build({
-  entryPoints: ['./src/index.ts'],
+  entryPoints: ['./src/rollup-plugin/index.ts'],
   bundle: true,
-  outdir: 'dist',
+  outfile: 'rollup-plugin-migrations/index.js',
   format: 'esm',
+  external: ['chokidar', 'node:*'],
 });
 
 //
@@ -16,8 +17,9 @@ await esbuild.build({
 //
 
 await esbuild.build({
-  entryPoints: ['./src/http-errors.ts'],
+  entryPoints: ['./src/runtime/better-sqlite3.ts'],
   bundle: true,
-  outfile: 'http-errors/index.js',
+  outfile: 'better-sqlite3/index.js',
   format: 'esm',
+  external: ['better-sqlite3'],
 });

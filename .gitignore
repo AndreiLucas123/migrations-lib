@@ -3,3 +3,5 @@ dist
 *.tgz
 
 tests/results
+rollup-plugin-migrations/*
+better-sqlite3/*
