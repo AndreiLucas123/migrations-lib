@@ -1,4 +1,4 @@
-import { migrationsWatcher } from '../src/watcher';
+import { migrationsWatcher } from '../src';
 import { resolve } from 'node:path';
 import { readFileSync } from 'node:fs';
 import test, { expect } from '@playwright/test';

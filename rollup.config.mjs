@@ -6,8 +6,8 @@ const config = [
   //
 
   {
-    input: './dist/types/watcher/index.d.ts',
-    output: { file: 'watcher/index.d.ts', format: 'es' },
+    input: './dist/types/src/index.d.ts',
+    output: { file: 'dist/index.d.ts', format: 'es' },
     plugins: [dts()],
   },
 
@@ -16,8 +16,14 @@ const config = [
   //
 
   {
-    input: './dist/types/runtime/better-sqlite3.d.ts',
-    output: [{ file: 'dist/index.d.ts', format: 'es' }],
+    input: './dist/types/src/better-sqlite3/better-sqlite3.d.ts',
+    output: [{ file: 'better-sqlite3/index.d.ts', format: 'es' }],
+    plugins: [dts()],
+  },
+
+  {
+    input: './dist/types/src/pglite/pglite.d.ts',
+    output: [{ file: 'pglite/index.d.ts', format: 'es' }],
     plugins: [dts()],
   },
 ];

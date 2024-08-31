@@ -5,15 +5,15 @@ import * as esbuild from 'esbuild';
 //
 
 await esbuild.build({
-  entryPoints: ['./src/watcher/index.ts'],
+  entryPoints: ['./src/index.ts'],
   bundle: true,
-  outfile: 'watcher/index.js',
+  outfile: 'dist/index.js',
   format: 'esm',
   external: ['chokidar', 'node:*'],
 });
 
 //
-//  Build the http-errors module
+//  Build the databases migrations module
 //
 
 await esbuild.build({
@@ -22,4 +22,12 @@ await esbuild.build({
   outfile: 'better-sqlite3/index.js',
   format: 'esm',
   external: ['better-sqlite3'],
+});
+
+await esbuild.build({
+  entryPoints: ['./src/pglite/pglite.ts'],
+  bundle: true,
+  outfile: 'pglite/index.js',
+  format: 'esm',
+  external: ['@electric-sql/pglite'],
 });

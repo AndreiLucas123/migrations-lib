@@ -3,5 +3,5 @@ dist
 *.tgz
 
 tests/results
-watcher/*
 better-sqlite3/*
+pglite/*
