@@ -1,6 +1,6 @@
 import type { Migration } from '../types';
-import { basename } from 'node:path';
-import { readFile, writeFile } from 'node:fs/promises';
+import path from 'node:path';
+import fs from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { type LoggerMigrations, consoleLogger } from './logger';
 import chokidar from 'chokidar';
@@ -88,25 +88,25 @@ export async function migrationsWatcher(
 
     fileOutput = output;
 
-    const migrationsDir = `${directoryToWatch}/migrations.ts`;
+    const migrationsFile = `${directoryToWatch}/migrations.ts`;
 
-    if (existsSync(migrationsDir)) {
-      const fileContent = await readFile(migrationsDir, 'utf-8');
+    if (existsSync(migrationsFile)) {
+      const fileContent = await fs.readFile(migrationsFile, 'utf-8');
 
       if (fileContent === output) {
         return;
       }
     }
 
-    await writeFile(migrationsDir, output, 'utf-8');
-    logger.info(`file for migrations ${migrationsDir} generated successfully`);
+    await fs.writeFile(migrationsFile, output, 'utf-8');
+    logger.info(`file for migrations ${migrationsFile} generated successfully`);
   }
 
   //
   //
 
-  async function add(path: string) {
-    const _basename = basename(path);
+  async function add(filePath: string) {
+    const _basename = path.basename(filePath);
     if (!regex.test(_basename)) {
       return false;
     }
@@ -117,8 +117,8 @@ export async function migrationsWatcher(
 
     filesWatched.push({
       name: _basename.replace(/\.(ts|sql)$/, ''),
-      content: sql ? await readFile(path, 'utf-8') : '<!-- TS -->',
-      path,
+      content: sql ? await fs.readFile(filePath, 'utf-8') : '<!-- TS -->',
+      path: filePath,
       sql,
       number,
     });
@@ -170,6 +170,10 @@ export async function migrationsWatcher(
       _resolve();
       _resolve = () => {};
       promise = null as any;
+
+      if (!filesWatched.length) {
+        logger.warn('No migration files found');
+      }
     });
 
   //
