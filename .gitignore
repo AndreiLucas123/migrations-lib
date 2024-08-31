@@ -3,5 +3,5 @@ dist
 *.tgz
 
 tests/results
-rollup-plugin-migrations/*
+watcher/*
 better-sqlite3/*

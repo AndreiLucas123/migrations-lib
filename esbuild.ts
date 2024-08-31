@@ -5,9 +5,9 @@ import * as esbuild from 'esbuild';
 //
 
 await esbuild.build({
-  entryPoints: ['./src/rollup-plugin/index.ts'],
+  entryPoints: ['./src/watcher/index.ts'],
   bundle: true,
-  outfile: 'rollup-plugin-migrations/index.js',
+  outfile: 'watcher/index.js',
   format: 'esm',
   external: ['chokidar', 'node:*'],
 });

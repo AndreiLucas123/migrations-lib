@@ -18,7 +18,7 @@ type FileWatched = {
 //
 //
 
-export function generateMigrationsWatcher(
+export function migrationsWatcher(
   directoryToWatch: string,
   logger: LoggerMigrations = consoleLogger,
 ): { start(): void; stop(): void } {
