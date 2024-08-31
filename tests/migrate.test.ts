@@ -1,5 +1,5 @@
-import Database, { Database as DB } from 'better-sqlite3';
-import { migrateBetterSQLite3 as migrate } from '../src/runtime/better-sqlite3';
+import Database, { type Database as DB } from 'better-sqlite3';
+import { migrateBetterSQLite3 as migrate } from '../src/better-sqlite3/better-sqlite3';
 import test, { expect } from '@playwright/test';
 
 const db = new Database(':memory:');
@@ -11,7 +11,7 @@ const migrations = [
     file: '2021-01-01-create-users-table.sql',
     migration: `
     CREATE TABLE users (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      id SERIAL PRIMARY KEY,
       name TEXT NOT NULL,
       email TEXT NOT NULL,
       password TEXT NOT NULL,
@@ -23,7 +23,7 @@ const migrations = [
     file: '2021-01-02-create-posts-table.sql',
     migration: `
     CREATE TABLE posts (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      id SERIAL PRIMARY KEY,
       title TEXT NOT NULL,
       content TEXT NOT NULL,
       created_at TEXT NOT NULL,
@@ -36,13 +36,14 @@ const migrations = [
       db.exec(
         `
         CREATE TABLE comments (
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          id SERIAL PRIMARY KEY,
           content TEXT NOT NULL,
           created_at TEXT NOT NULL,
           updated_at TEXT NOT NULL
         );
 
         CREATE TABLE posts_comments (
+          post_id SERIAL PRIMARY KEY,
           post_id INTEGER NOT NULL,
           comment_id INTEGER NOT NULL,
           FOREIGN KEY (post_id) REFERENCES posts (id),

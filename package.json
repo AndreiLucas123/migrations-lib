@@ -10,6 +10,7 @@
   },
   "main": "src/index.ts",
   "devDependencies": {
+    "@electric-sql/pglite": "^0.2.4",
     "@playwright/test": "^1.46.1",
     "@types/better-sqlite3": "^7.6.11",
     "@types/node": "^22.5.1",

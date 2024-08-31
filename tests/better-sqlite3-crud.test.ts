@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
-import { insertIntoDB, updateDB } from '../src/runtime/better-sqlite3';
-import Database, { Database as SQLiteDatabase } from 'better-sqlite3';
+import { insertIntoDB, updateDB } from '../src/better-sqlite3/better-sqlite3';
+import Database, { type Database as SQLiteDatabase } from 'better-sqlite3';
 
 //
 //

@@ -1,4 +1,4 @@
-import { Database } from 'better-sqlite3';
+import type { Database } from 'better-sqlite3';
 
 /**
  * Object that will be inserted in the database

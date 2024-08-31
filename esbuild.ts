@@ -17,7 +17,7 @@ await esbuild.build({
 //
 
 await esbuild.build({
-  entryPoints: ['./src/runtime/better-sqlite3.ts'],
+  entryPoints: ['./src/better-sqlite3/better-sqlite3.ts'],
   bundle: true,
   outfile: 'better-sqlite3/index.js',
   format: 'esm',

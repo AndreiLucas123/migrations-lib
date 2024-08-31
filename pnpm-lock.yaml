@@ -8,6 +8,9 @@ importers:
 
   .:
     devDependencies:
+      '@electric-sql/pglite':
+        specifier: ^0.2.4
+        version: 0.2.4
       '@playwright/test':
         specifier: ^1.46.1
         version: 1.46.1
@@ -55,6 +58,9 @@ packages:
   '@babel/highlight@7.24.7':
     resolution: {integrity: sha512-EStJpq4OuY8xYfhGVXngigBJRWxftKX9ksiGDnmlY3o7B/V7KIAc9X4oiK87uPJSc/vs5L869bem5fhZa8caZw==}
     engines: {node: '>=6.9.0'}
+
+  '@electric-sql/pglite@0.2.4':
+    resolution: {integrity: sha512-NN1ATH9aYTCD4257wZH1CjAKdro8jDd5r/BumxZtEVTDNDztBmPYYtBd4TEIHWdi0+QuM7SWk2JRCLvAYCSEWg==}
 
   '@esbuild/aix-ppc64@0.23.1':
     resolution: {integrity: sha512-6VhYk1diRqrhBAqpJEdjASR/+WVRtfjpqKuNw11cLiaWpAT/Uu+nokB+UJnevzy/P9C/ty6AOe0dwueMrGh/iQ==}
@@ -595,6 +601,8 @@ snapshots:
       js-tokens: 4.0.0
       picocolors: 1.0.1
     optional: true
+
+  '@electric-sql/pglite@0.2.4': {}
 
   '@esbuild/aix-ppc64@0.23.1':
     optional: true
