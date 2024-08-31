@@ -1,18 +1,18 @@
-import { generateMigrationsWatcher } from '../src/rollup-plugin/generateMigrationsWatcher';
+import { migrationsWatcher } from '../src/watcher';
 import { resolve } from 'node:path';
 import { readFileSync } from 'node:fs';
 import test, { expect } from '@playwright/test';
 
 //
 //
-test.describe('generateMigrations', () => {
-  let watcher: ReturnType<typeof generateMigrationsWatcher> | null = null;
+test.describe('migrationsWatcher', () => {
+  let watcher: Awaited<ReturnType<typeof migrationsWatcher>> | null = null;
 
   //
   //
 
   test.afterEach(() => {
-    watcher?.stop();
+    watcher?.close();
     watcher = null;
   });
 
@@ -39,8 +39,7 @@ export default [
 
   test('should migrate without errors', async function () {
     const __dirname = new URL('.', import.meta.url).pathname;
-    watcher = generateMigrationsWatcher(resolve(__dirname, 'migrations-test'));
-    watcher.start();
+    watcher = await migrationsWatcher(resolve(__dirname, 'migrations-test'));
 
     await new Promise((resolve) => setTimeout(resolve, 200));
 
