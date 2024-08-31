@@ -1,5 +1,7 @@
 # migrations-lib
 
+> A documentação dessa lib precisa ser revista
+
 Antes fazia parte do `new-singularity`, mas foi movido para um projeto separado, pois não terá atualizações frequentes e poderá ser usado em outros projetos como o `GLSIP`
 
 ## migrations-lib/generateMigrations

@@ -1,6 +1,6 @@
 {
   "name": "migrations-lib",
-  "version": "1.0.0-next.0",
+  "version": "1.0.0-next.1",
   "author": "Simple Organization",
   "scripts": {
     "build": "tsc && rollup -c && tsx esbuild.ts",
@@ -40,6 +40,8 @@
     }
   },
   "files": [
+    "dist/index.d.ts",
+    "dist/index.js",
     "pglite/index.d.ts",
     "pglite/index.js",
     "better-sqlite3/index.js",

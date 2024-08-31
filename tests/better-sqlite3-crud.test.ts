@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { insertIntoDB, updateDB } from '../src/better-sqlite3/better-sqlite3';
+import { insertIntoDB, updateDB } from '../src/better-sqlite3/utils/better-sqlite3-crud';
 import Database, { type Database as SQLiteDatabase } from 'better-sqlite3';
 
 //
