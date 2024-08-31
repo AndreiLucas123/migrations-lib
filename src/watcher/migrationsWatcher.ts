@@ -1,6 +1,7 @@
 import type { Migration } from '../types';
 import { basename } from 'node:path';
 import { readFile, writeFile } from 'node:fs/promises';
+import { existsSync } from 'node:fs';
 import { type LoggerMigrations, consoleLogger } from './logger';
 import chokidar from 'chokidar';
 
@@ -89,10 +90,12 @@ export async function migrationsWatcher(
 
     const migrationsDir = `${directoryToWatch}/migrations.ts`;
 
-    const fileContent = await readFile(migrationsDir, 'utf-8');
+    if (existsSync(migrationsDir)) {
+      const fileContent = await readFile(migrationsDir, 'utf-8');
 
-    if (fileContent === output) {
-      return;
+      if (fileContent === output) {
+        return;
+      }
     }
 
     await writeFile(migrationsDir, output, 'utf-8');
