@@ -2,10 +2,6 @@ import Database, { type Database as DB } from 'better-sqlite3';
 import { migrateBetterSQLite3 as migrate } from '../src/better-sqlite3/better-sqlite3';
 import test, { expect } from '@playwright/test';
 
-const db = new Database(':memory:');
-// const db = new Database('db.db');
-db.pragma('journal_mode = WAL');
-
 const migrations = [
   {
     file: '2021-01-01-create-users-table.sql',
@@ -44,7 +40,6 @@ const migrations = [
 
         CREATE TABLE posts_comments (
           post_id SERIAL PRIMARY KEY,
-          post_id INTEGER NOT NULL,
           comment_id INTEGER NOT NULL,
           FOREIGN KEY (post_id) REFERENCES posts (id),
           FOREIGN KEY (comment_id) REFERENCES comments (id)
@@ -61,12 +56,18 @@ test.describe('migrate', () => {
   //
   //
   test('should migrate without errors', () => {
+    const db = new Database(':memory:');
+
     migrate(db, migrations);
   });
 
   //
   //
   test('should create migrations table', () => {
+    const db = new Database(':memory:');
+
+    migrate(db, migrations);
+
     const migrationTable = db
       .prepare('SELECT name FROM sqlite_master WHERE type = ? AND name = ?')
       .get('table', 'migrations');
@@ -77,6 +78,10 @@ test.describe('migrate', () => {
   //
   //
   test('should insert migrations into migrations table', () => {
+    const db = new Database(':memory:');
+    
+    migrate(db, migrations);
+
     const dbResult = db.prepare('SELECT name FROM migrations').all() as {
       name: string;
     }[];
@@ -90,6 +95,8 @@ test.describe('migrate', () => {
   //
   //
   test('should execute migrations again and change nothing', () => {
+    const db = new Database(':memory:');
+
     migrate(db, migrations);
 
     const dbResult = db.prepare('SELECT name FROM migrations').all() as {
@@ -105,6 +112,8 @@ test.describe('migrate', () => {
   //
   //
   test('should throw error if migrations are corrupted', () => {
+    const db = new Database(':memory:');
+
     expect(() => {
       migrate(db, [
         {
