@@ -1,5 +1,5 @@
 import type { Database } from 'better-sqlite3';
-import type { Migration } from './types';
+import type { Migration } from '../types';
 
 //
 //

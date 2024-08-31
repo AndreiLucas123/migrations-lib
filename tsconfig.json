@@ -15,7 +15,8 @@
     "isolatedModules": true,
     "outDir": "dist/types",
     "declaration": true,
-    "emitDeclarationOnly": true
+    "emitDeclarationOnly": true,
+    "verbatimModuleSyntax": true
   },
   "include": ["src", "test"]
 }

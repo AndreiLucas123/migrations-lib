@@ -1,7 +1,7 @@
-import type { Migration } from '../runtime/types';
+import type { Migration } from '../types';
 import { basename } from 'node:path';
 import { readFile, writeFile } from 'node:fs/promises';
-import { LoggerMigrations, consoleLogger } from './logger';
+import { type LoggerMigrations, consoleLogger } from './logger';
 import chokidar from 'chokidar';
 
 //
