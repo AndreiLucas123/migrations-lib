@@ -39,7 +39,9 @@ export default [
 
   test('should migrate without errors', async function () {
     const __dirname = new URL('.', import.meta.url).pathname;
-    watcher = await migrationsWatcher(resolve(__dirname, 'migrations-test'));
+    watcher = await migrationsWatcher({
+      directoryToWatch: resolve(__dirname, 'migrations-test'),
+    });
 
     await new Promise((resolve) => setTimeout(resolve, 200));
 

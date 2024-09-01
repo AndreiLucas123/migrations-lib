@@ -3,7 +3,7 @@ import path from 'node:path';
 import fs from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { type LoggerMigrations, consoleLogger } from './logger';
-import chokidar from 'chokidar';
+import chokidar, { type WatchOptions } from 'chokidar';
 
 //
 //
@@ -19,10 +19,43 @@ type FileWatched = {
 //
 //
 
+export interface MigrationsLibOptions {
+  /**
+   * Directory to watch
+   */
+  directoryToWatch: string;
+
+  /**
+   * Logger used to log messages
+   *
+   * @default consoleLogger
+   */
+  logger?: LoggerMigrations;
+
+  /**
+   * Options for chokidar
+   */
+  chokidar?: WatchOptions;
+
+  /**
+   * Whether to watch the files or not
+   */
+  watch?: boolean;
+}
+
+//
+//
+
 export async function migrationsWatcher(
-  directoryToWatch: string,
-  logger: LoggerMigrations = consoleLogger,
-): Promise<chokidar.FSWatcher> {
+  opts: MigrationsLibOptions,
+): Promise<chokidar.FSWatcher | null> {
+  const {
+    directoryToWatch,
+    logger = consoleLogger,
+    chokidar: chokidarOpts,
+    watch = true,
+  } = opts;
+
   let watcher: chokidar.FSWatcher | null = null;
   let filesWatched: FileWatched[] = [];
   let fileOutput: string | null = null;
@@ -151,6 +184,7 @@ export async function migrationsWatcher(
   watcher = chokidar.watch(`${directoryToWatch}/*.{ts,sql}`, {
     ignored: /(^|[\/\\])\../, // Ignorar arquivos ocultos
     persistent: true,
+    ...chokidarOpts,
   });
 
   watcher
@@ -180,6 +214,17 @@ export async function migrationsWatcher(
   //
 
   await promise;
+
+  //
+  //
+
+  if (watch) {
+    logger.info('Watching for migration files...');
+  } else {
+    watcher.close();
+    watcher = null;
+    return null;
+  }
 
   //
   //
