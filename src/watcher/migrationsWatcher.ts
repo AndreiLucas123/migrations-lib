@@ -68,7 +68,7 @@ export async function migrationsWatcher(
 
   function queueOutput() {
     clearTimeout(timeout);
-    timeout = setTimeout(generateOutput, 100);
+    timeout = setTimeout(generateOutput, 50);
   }
 
   //
@@ -201,13 +201,15 @@ export async function migrationsWatcher(
       logger.info('Removed migration file: ' + path);
     })
     .on('ready', () => {
-      _resolve();
-      _resolve = () => {};
-      promise = null as any;
+      setTimeout(() => {
+        _resolve();
+        _resolve = () => {};
+        promise = null as any;
 
-      if (!filesWatched.length) {
-        logger.warn('No migration files found');
-      }
+        if (!filesWatched.length) {
+          logger.warn('No migration files found');
+        }
+      }, 100);
     });
 
   //
