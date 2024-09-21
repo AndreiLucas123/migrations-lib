@@ -12,7 +12,7 @@ const config = [
   },
 
   //
-  //  Build the migrations-lib for better-sqlite3
+  //  Build the migrations-lib for better-sqlite3, pglite and bun
   //
 
   {
@@ -25,6 +25,13 @@ const config = [
     input: './dist/types/src/pglite/pglite.d.ts',
     output: [{ file: 'pglite/index.d.ts', format: 'es' }],
     plugins: [dts()],
+  },
+
+  {
+    input: './dist/types/src/bun/bun.d.ts',
+    output: [{ file: 'bun/index.d.ts', format: 'es' }],
+    plugins: [dts()],
+    external: ['bun:*'],
   },
 ];
 

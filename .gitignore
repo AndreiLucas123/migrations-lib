@@ -5,3 +5,4 @@ dist
 tests/results
 better-sqlite3/*
 pglite/*
+bun/*

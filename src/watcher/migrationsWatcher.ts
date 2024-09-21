@@ -3,7 +3,7 @@ import path from 'node:path';
 import fs from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { type LoggerMigrations, consoleLogger } from './logger';
-import chokidar, { type WatchOptions } from 'chokidar';
+import chokidar, { FSWatcher, type ChokidarOptions } from 'chokidar';
 
 //
 //
@@ -35,7 +35,7 @@ export interface MigrationsLibOptions {
   /**
    * Options for chokidar
    */
-  chokidar?: WatchOptions;
+  chokidar?: ChokidarOptions;
 
   /**
    * Whether to watch the files or not
@@ -48,7 +48,7 @@ export interface MigrationsLibOptions {
 
 export async function migrationsWatcher(
   opts: MigrationsLibOptions,
-): Promise<chokidar.FSWatcher | null> {
+): Promise<FSWatcher | null> {
   const {
     directoryToWatch,
     logger = consoleLogger,
@@ -56,7 +56,7 @@ export async function migrationsWatcher(
     watch = true,
   } = opts;
 
-  let watcher: chokidar.FSWatcher | null = null;
+  let watcher: FSWatcher | null = null;
   let filesWatched: FileWatched[] = [];
   let fileOutput: string | null = null;
   let timeout: any = null;
@@ -182,21 +182,21 @@ export async function migrationsWatcher(
   //
 
   watcher = chokidar.watch(`${directoryToWatch}/*.{ts,sql}`, {
-    ignored: /(^|[\/\\])\../, // Ignorar arquivos ocultos
+    ignored: /(^|[\/\\])\../ as any, // Ignorar arquivos ocultos
     persistent: true,
     ...chokidarOpts,
   });
 
   watcher
     .on('add', add)
-    .on('change', async (path) => {
+    .on('change', async (path: string) => {
       remove(path);
       const changed = await add(path);
       if (changed) {
         logger.info('Changed migration file: ' + path);
       }
     })
-    .on('unlink', (path) => {
+    .on('unlink', (path: string) => {
       remove(path);
       logger.info('Removed migration file: ' + path);
     })

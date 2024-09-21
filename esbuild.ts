@@ -31,3 +31,11 @@ await esbuild.build({
   format: 'esm',
   external: ['@electric-sql/pglite'],
 });
+
+await esbuild.build({
+  entryPoints: ['./src/bun/bun.ts'],
+  bundle: true,
+  outfile: 'bun/index.js',
+  format: 'esm',
+  external: ['bun:*'],
+});
