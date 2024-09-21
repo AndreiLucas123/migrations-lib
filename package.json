@@ -5,26 +5,32 @@
   "scripts": {
     "build": "tsc && rollup -c && tsx esbuild.ts",
     "format": "prettier --write \"src/**/*.ts\" \"tests/**/*.ts\"",
-    "test": "playwright test",
-    "prepack": "pnpm build"
+    "prepack": "pnpm build",
+    "test": "playwright test"
   },
   "main": "dist/index.js",
   "devDependencies": {
-    "@electric-sql/pglite": "^0.2.4",
-    "@playwright/test": "^1.46.1",
+    "@electric-sql/pglite": "^0.2.7",
+    "@playwright/test": "^1.47.1",
     "@types/better-sqlite3": "^7.6.11",
-    "@types/node": "^22.5.1",
-    "better-sqlite3": "^11.2.1",
-    "chokidar": "^3.6.0",
+    "@types/node": "^22.5.5",
+    "better-sqlite3": "^11.3.0",
+    "chokidar": "^4.0.0",
     "esbuild": "^0.23.1",
     "prettier": "^3.3.3",
-    "rollup": "^4.21.2",
+    "rollup": "^4.21.3",
     "rollup-plugin-dts": "^6.1.1",
-    "tsx": "^4.19.0",
-    "typescript": "^5.5.4"
+    "tsx": "^4.19.1",
+    "typescript": "^5.6.2"
   },
-  "types": "dist/index.d.ts",
-  "type": "module",
+  "files": [
+    "dist/index.d.ts",
+    "dist/index.js",
+    "pglite/index.d.ts",
+    "pglite/index.js",
+    "better-sqlite3/index.js",
+    "better-sqlite3/index.d.ts"
+  ],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -39,12 +45,6 @@
       "default": "./pglite/index.js"
     }
   },
-  "files": [
-    "dist/index.d.ts",
-    "dist/index.js",
-    "pglite/index.d.ts",
-    "pglite/index.js",
-    "better-sqlite3/index.js",
-    "better-sqlite3/index.d.ts"
-  ]
+  "type": "module",
+  "types": "dist/index.d.ts"
 }
